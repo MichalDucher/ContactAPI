@@ -1,6 +1,6 @@
-@ContactAPI_HostAddress = http://localhost:5257
+@ContactAPI_HostAddress = http://localhost:44335
 
-GET {{ContactAPI_HostAddress}}/weatherforecast/
+GET {{ContactAPI_HostAddress}}/api/contacts
 Accept: application/json
 
 ###
