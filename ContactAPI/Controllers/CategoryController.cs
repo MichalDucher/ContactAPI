@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 
 namespace ContactAPI.Controllers
 {
+    //Kontroler tworzący end-point GET, do pobierania kategorii
     [Route("api/categories")]
     [ApiController]
     public class CategoryController : ControllerBase
@@ -20,6 +21,7 @@ namespace ContactAPI.Controllers
             _context = context;
         }
 
+        //Zwraca listę wszystkich kategorii
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -34,6 +36,7 @@ namespace ContactAPI.Controllers
             }
         }
 
+        //Zwraca kategorię o podanym id
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

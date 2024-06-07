@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace ContactAPI.Controllers
 {
+
+    //Kontroler tworzący end-point GET, do pobierania podkategorii
     [Route("api/subcategories")]
     [ApiController]
     public class SubcategoryController : ControllerBase
@@ -21,6 +23,7 @@ namespace ContactAPI.Controllers
             _context = context;
         }
 
+        //Zwraca listę wszystkich podkategorii
         [HttpGet]
         public async Task<IActionResult> Get()
         {
@@ -35,6 +38,7 @@ namespace ContactAPI.Controllers
             }
         }
 
+        //Zwraca podkategorię o danym id
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(int id)
         {

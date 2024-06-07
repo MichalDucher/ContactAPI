@@ -20,8 +20,8 @@ namespace ContactAPI.Controllers
         {
             _context = context;
         }
-
-        [HttpGet]
+      
+        [HttpGet] //Zwraca listę wszystkich kontaktów (bez autentykacji)
         public async Task<IActionResult> Get()
         {
             try
@@ -34,8 +34,8 @@ namespace ContactAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving data: {ex.Message}");
             }
         }
-
-        [HttpGet("{id}")]
+        
+        [HttpGet("{id}")] //Zwraca kontakt o konkretnym id (bez autentykacji)
         public async Task<IActionResult> Get(int id)
         {
             try
@@ -52,9 +52,8 @@ namespace ContactAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while retrieving data: {ex.Message}");
             }
         }
-
         
-        [HttpPost]
+        [HttpPost, Authorize] //Dodaje nowy kontakt (potrzebna autentykacja, dotstępne tylko dla zalogowanego użytkownika)
         public async Task<IActionResult> Post([FromBody] Contact contact)
         {
             try
@@ -85,9 +84,8 @@ namespace ContactAPI.Controllers
                 return StatusCode(StatusCodes.Status500InternalServerError, $"An error occurred while posting data: {ex.Message}");
             }
         }
-
         
-        [HttpPut("{id}")]
+        [HttpPut("{id}"), Authorize] //Aktualizuje dane istniejącego kontaktu (potrzebna autentykacja)
         public async Task<IActionResult> Put(int id, [FromBody] Contact contact)
         {
             try
@@ -124,8 +122,7 @@ namespace ContactAPI.Controllers
             }
         }
 
-        
-        [HttpDelete("{id}"), Authorize]
+        [HttpDelete("{id}"), Authorize]        //Usuwa kontakt o danym id (potrzebna autentykacja)
         public async Task<IActionResult> Delete(int id)
         {
             try

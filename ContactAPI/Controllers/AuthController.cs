@@ -28,6 +28,7 @@ namespace ContactAPI.Controllers
             _context = context;
         }
 
+        //Sprawdza poprawność danych logowania i zwraca token potrzebny do autentykacji
         [HttpPost("login")]
         public async Task<IActionResult> Login([FromBody] User user)
         {
@@ -40,33 +41,34 @@ namespace ContactAPI.Controllers
             return Unauthorized("Wrong login or password :/");
         }
 
+        //Generuje token
         private string GenerateToken(User user)
         {
             // Pobierz konfigurację JWT z ustawień
             var jwtConf = _configuration.GetSection("Jwt");
 
             // Klucz do podpisywania tokenu
-            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(jwtConf["Key"]));
+            var key = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
             var credentials = new SigningCredentials(key, SecurityAlgorithms.HmacSha512Signature);
 
             // Tworzenie listy roszczeń (claims)
             List<Claim> claims = new()
             {
                 new Claim(JwtRegisteredClaimNames.Name, user.username),
+                new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()) // Unikalny identyfikator tokenu
             };
 
-            // Tworzenie opisu tokenu
-            var token = new JwtSecurityToken
-            (
+            // Tworzenie nowego Tokenu
+            var token = new JwtSecurityToken(
                 claims: claims,
-                expires:  DateTime.UtcNow.AddMinutes(100),
+                expires: DateTime.UtcNow.AddMinutes(double.Parse(_configuration["Jwt:ExpireMinutes"])),
                 signingCredentials: credentials
             );
 
-    
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
+        //Funkcja hashująca zwracająca hash podanego przez użytkownika hasła do porównania z tym w bazie danych
         private string HashPassword(string password)
         {
             // Tworzenie instancji obiektu SHA256

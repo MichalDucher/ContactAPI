@@ -35,10 +35,10 @@ builder.Services.AddAuthentication(options =>
     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 }).AddJwtBearer(options =>
 {
+    options.IncludeErrorDetails = true;
     options.UseSecurityTokenValidators = true;
     options.TokenValidationParameters = new TokenValidationParameters
-    {
-        
+    {     
         ValidateIssuerSigningKey = true,
         IssuerSigningKey = new SymmetricSecurityKey(
             Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"])),

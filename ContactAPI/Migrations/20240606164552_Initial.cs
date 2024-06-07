@@ -119,22 +119,19 @@ namespace ContactAPI.Migrations
                 });
         }
 
+        //Dokładnie taka sama funkcja jak ta a AuthController
         private static string HashPassword(string password)
         {
-            // Tworzenie instancji obiektu SHA256
             using (var sha256 = SHA256.Create())
             {
-                // Obliczanie hasha dla hasła
                 var bytes = sha256.ComputeHash(Encoding.UTF8.GetBytes(password));
 
-                // Konwersja bajtów na ciąg znaków w formacie szesnastkowym
                 var builder = new StringBuilder();
                 foreach (var b in bytes)
                 {
                     builder.Append(b.ToString("x2"));
                 }
 
-                // Zwracanie zahashowanego hasła
                 return builder.ToString();
             }
         }
